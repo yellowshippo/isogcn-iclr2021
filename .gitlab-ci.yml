@@ -1,0 +1,40 @@
+image: registry.ritc.jp/ricos/machine_learning/feml_heat:0.2.0
+
+# variables:
+#   GIT_SUBMODULE_STRATEGY: recursive
+
+default:
+  before_script:
+    - poetry config virtualenvs.create false
+
+stages:
+  - test
+
+scalar2grad:
+  stage: test
+  script:
+    - make differential_data PYTHON=python3.7  N_GRID_TRAIN=10 N_GRID_VALIDATION=3 N_GRID_TEST=3
+    - make scalar2grad PYTHON=python3.7 N_EPOCH=3
+    - make scalar2grad_baseline PYTHON=python3.7 N_EPOCH=3
+    - make scalar2grad_baseline PYTHON=python3.7 N_EPOCH=3 BASELINE_NAME=gcnii ADJ=5 INPUT=_w_node
+  tags:
+    - avx
+    - gpu
+
+scalar2hessian:
+  stage: test
+  script:
+    - make differential_data PYTHON=python3.7  N_GRID_TRAIN=10 N_GRID_VALIDATION=3 N_GRID_TEST=3
+    - make scalar2hessian PYTHON=python3.7 N_EPOCH=3
+    - make scalar2hessian_baseline PYTHON=python3.7 N_EPOCH=3
+  tags:
+    - avx
+    - gpu
+
+small_heat_nl_tensor_pipeline:
+  stage: test
+  script:
+    - make small_heat_nl_tensor_pipeline PYTHON=python3.7
+  tags:
+    - avx
+    - gpu

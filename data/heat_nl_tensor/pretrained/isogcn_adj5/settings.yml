@@ -1,0 +1,769 @@
+conversion:
+  file_type: fistr
+  finished_file: converted
+  mandatory: []
+  mandatory_variables: []
+  optional: []
+  optional_variables: []
+  required_file_names: []
+  skip_femio: false
+  time_series: false
+data:
+  develop: []
+  inferred:
+  - data/inferred
+  interim:
+  - data/interim
+  pad: false
+  preprocessed:
+  - data/nl_tensor/preprocessed/train_50/00000015/clscale0.2
+  raw:
+  - data/raw
+model:
+  blocks:
+  - activation_after_residual: true
+    activations:
+    - tanh
+    - tanh
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - ISO_GCN_RANK0_RANK1_1
+    - MATERIAL_MLP_1
+    - ADD_1
+    device: null
+    dropouts:
+    - 0.0
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys:
+    - rank0
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: true
+    is_last: false
+    kernel_sizes: null
+    name: IN_RANK0
+    nodes:
+    - 3
+    - 128
+    - 512
+    optional: {}
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: adjustable_mlp
+  - activation_after_residual: true
+    activations:
+    - identity
+    allow_linear_residual: false
+    bias: false
+    coeff: null
+    destinations:
+    - CONTRACTION_1
+    - CONTRACTION_2
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys:
+    - rank2
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: true
+    is_last: false
+    kernel_sizes: null
+    name: IN_RANK2
+    nodes:
+    - 1
+    - 512
+    optional: {}
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: adjustable_mlp
+  - activation_after_residual: true
+    activations:
+    - identity
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - MUL_1
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: ISO_GCN_RANK0_RANK1_1
+    nodes:
+    - 512
+    - 512
+    optional:
+      ah_w: false
+      factor: 0.006291075618775261
+      propagations:
+      - convolution
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    - 1
+    - 2
+    time_series: false
+    type: iso_gcn
+  - activation_after_residual: true
+    activations:
+    - tanh
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - MUL_1
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: MATERIAL_MLP_1
+    nodes:
+    - 512
+    - 512
+    optional: {}
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: mlp
+  - activation_after_residual: true
+    activations:
+    - identity
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - CONTRACTION_1
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: MUL_1
+    nodes:
+    - 1024
+    - 512
+    optional:
+      operator: mul
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: reducer
+  - activation_after_residual: true
+    activations:
+    - identity
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - ISO_GCN_RANK1_RANK0_1
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: CONTRACTION_1
+    nodes:
+    - 1024
+    - 512
+    optional: {}
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: contraction
+  - activation_after_residual: true
+    activations:
+    - tanh
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - ADD_1
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: ISO_GCN_RANK1_RANK0_1
+    nodes:
+    - 512
+    - 512
+    optional:
+      ah_w: true
+      factor: 0.006291075618775261
+      propagations:
+      - contraction
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    - 1
+    - 2
+    time_series: false
+    type: iso_gcn
+  - activation_after_residual: true
+    activations:
+    - identity
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - ISO_GCN_RANK0_RANK1_2
+    - MATERIAL_MLP_2
+    - ADD_2
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: ADD_1
+    nodes:
+    - 1024
+    - 512
+    optional:
+      operator: add
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: reducer
+  - activation_after_residual: true
+    activations:
+    - identity
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - MUL_2
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: ISO_GCN_RANK0_RANK1_2
+    nodes:
+    - 512
+    - 512
+    optional:
+      ah_w: false
+      factor: 0.006291075618775261
+      propagations:
+      - convolution
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    - 1
+    - 2
+    time_series: false
+    type: iso_gcn
+  - activation_after_residual: true
+    activations:
+    - tanh
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - MUL_2
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: MATERIAL_MLP_2
+    nodes:
+    - 512
+    - 512
+    optional: {}
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: mlp
+  - activation_after_residual: true
+    activations:
+    - identity
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - CONTRACTION_2
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: MUL_2
+    nodes:
+    - 1024
+    - 512
+    optional:
+      operator: mul
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: reducer
+  - activation_after_residual: true
+    activations:
+    - identity
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - ISO_GCN_RANK1_RANK0_2
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: CONTRACTION_2
+    nodes:
+    - 1024
+    - 512
+    optional: {}
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: contraction
+  - activation_after_residual: true
+    activations:
+    - tanh
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - ADD_2
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: ISO_GCN_RANK1_RANK0_2
+    nodes:
+    - 512
+    - 512
+    optional:
+      ah_w: true
+      factor: 0.006291075618775261
+      propagations:
+      - contraction
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    - 1
+    - 2
+    time_series: false
+    type: iso_gcn
+  - activation_after_residual: true
+    activations:
+    - identity
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations:
+    - OUT_MLP
+    device: null
+    dropouts:
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: false
+    kernel_sizes: null
+    name: ADD_2
+    nodes:
+    - 1024
+    - 512
+    optional:
+      operator: add
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: reducer
+  - activation_after_residual: true
+    activations:
+    - tanh
+    - tanh
+    - identity
+    allow_linear_residual: false
+    bias: true
+    coeff: null
+    destinations: []
+    device: null
+    dropouts:
+    - 0.0
+    - 0.0
+    - 0.0
+    hidden_activation: relu
+    hidden_dropout: 0.5
+    hidden_layers: null
+    hidden_nodes: null
+    input_dropout: 0.0
+    input_indices: null
+    input_keys: null
+    input_slice:
+    - 0
+    - null
+    - 1
+    is_first: false
+    is_last: true
+    kernel_sizes: null
+    name: OUT_MLP
+    nodes:
+    - 512
+    - 512
+    - 128
+    - 5
+    optional: {}
+    output_activation: identity
+    output_dropout: 0.0
+    output_key: null
+    residual: false
+    support_input_index: null
+    support_input_indices:
+    - 0
+    time_series: false
+    type: mlp
+optuna:
+  hyperparameters: []
+  n_trial: 100
+  output_base_directory: models/optuna
+  setting: {}
+preprocess: {}
+replace_preprocessed: true
+study:
+  n_fold: 10
+  plot_validation: false
+  relative_develop_size_linspace:
+  - 0.2
+  - 1.0
+  - 5
+  root_directory: null
+  scale_loss: false
+  type: learning_curve
+  unit_error: '-'
+  x_from_zero: false
+  x_logscale: false
+  y_from_zero: false
+  y_logscale: false
+trainer:
+  batch_size: 1
+  compute_accuracy: false
+  data_parallel: false
+  display_mergin: 5
+  draw_network: true
+  element_batch_size: -1
+  element_wise: false
+  gpu_id: 1
+  input_dims:
+    rank0:
+    - 1
+    - 1
+    - 1
+    rank2:
+    - 1
+  input_names:
+    rank0:
+    - nodal_effective_volume
+    - nodal_mean_volume
+    - nodal_t_0
+    rank2:
+    - nodal_thermal_conductivity
+  inputs:
+    rank0:
+    - dim: 1
+      name: nodal_effective_volume
+    - dim: 1
+      name: nodal_mean_volume
+    - dim: 1
+      name: nodal_t_0
+    rank2:
+    - dim: 1
+      name: nodal_thermal_conductivity
+  iterator: serial
+  lazy: true
+  log_trigger_epoch: 1
+  loss_function: mse
+  model_parallel: false
+  n_epoch: 10000
+  name: isogcn_adj5
+  non_blocking: true
+  num_workers: 0
+  optimizer: adam
+  optimizer_setting:
+    betas:
+    - 0.9
+    - 0.99
+    eps: 1.0e-08
+    lr: 0.001
+    weight_decay: 0
+  optuna_trial: null
+  output_dims:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  output_directory: models/default_2020-09-28_00-41-49.313812
+  output_names:
+  - nodal_t_20
+  - nodal_t_40
+  - nodal_t_60
+  - nodal_t_80
+  - nodal_t_100
+  output_stats: false
+  outputs:
+  - dim: 1
+    name: nodal_t_20
+  - dim: 1
+    name: nodal_t_40
+  - dim: 1
+    name: nodal_t_60
+  - dim: 1
+    name: nodal_t_80
+  - dim: 1
+    name: nodal_t_100
+  patience: 3
+  pretrain_directory: null
+  prune: false
+  restart_directory: models/isogcn_adj5_2020-09-27_22-51-57.662939
+  seed: 0
+  simplified_model: false
+  snapshot_choise_method: best
+  split_ratio: {}
+  stop_trigger_epoch: 10
+  support_input: null
+  support_inputs:
+  - nodal_grad_x_5
+  - nodal_grad_y_5
+  - nodal_grad_z_5
+  time_series: false
+  use_siml_updater: true
+  validation_batch_size: 1
+  validation_directories: []
+  validation_element_batch_size: -1
