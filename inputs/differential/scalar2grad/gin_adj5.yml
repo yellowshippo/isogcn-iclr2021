@@ -1,0 +1,63 @@
+data:
+  train:
+    - data/differential/preprocessed/train
+  validation:
+    - data/differential/preprocessed/validation
+  test:
+    - data/differential/preprocessed/test
+trainer:
+  inputs:
+    - name: scalar_field
+      dim: 1
+  support_input: nodal_nadj
+  outputs:
+    - name: gradient
+      dim: 3
+  prune: true
+  batch_size: 5
+  n_epoch: 1000
+  log_trigger_epoch: 1
+  stop_trigger_epoch: 10
+  seed: 0
+  lazy: true
+  num_workers: 0
+model:
+  blocks:
+    - name: IN_MLP
+      type: adjustable_mlp
+      destinations:
+        - GIN
+      nodes:
+        - -1
+        - 8
+        - 64
+      activations:
+        - tanh
+        - tanh
+    - name: GIN
+      type: gin
+      destinations:
+        - OUT_LINEAR
+      nodes:
+        - -1
+        - 64
+        - 64
+        - 64
+        - 64
+        - 64
+      activations:
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+        - identity
+      optional:
+        ah_w: false
+    - name: OUT_LINEAR
+      type: mlp
+      bias: false
+      activations:
+        - identity
+      nodes:
+        - -1
+        - 3

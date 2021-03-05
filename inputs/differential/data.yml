@@ -1,0 +1,59 @@
+data:
+  interim: data/differential/interim
+  preprocessed: data/differential/preprocessed
+  inferred: data/differential/inferred
+  train:
+    - data/differential/preprocessed/train
+  validation:
+    - data/differential/preprocessed/validation
+  test:
+    - data/differential/preprocessed/test
+conversion:
+  required_file_names:
+    - scalar_field.npy
+  time_series: false
+preprocess:
+  nodal_nadj:
+    method: identity
+  nodal_nadj_2:
+    method: identity
+  nodal_nadj_4:
+    method: identity
+  nodal_nadj_4:
+    method: identity
+  nodal_nadj_5:
+    method: identity
+  nodal_nadj_10:
+    method: identity
+  nodal_grad_x_1:
+    method: identity
+    componentwise: false
+  nodal_grad_y_1:
+    same_as: nodal_grad_x_2
+  nodal_grad_z_1:
+    same_as: nodal_grad_x_2
+  nodal_grad_x_2:
+    method: identity
+    componentwise: false
+  nodal_grad_y_2:
+    same_as: nodal_grad_x_2
+  nodal_grad_z_2:
+    same_as: nodal_grad_x_2
+  nodal_grad_x_5:
+    method: identity
+    componentwise: false
+  nodal_grad_y_5:
+    same_as: nodal_grad_x_5
+  nodal_grad_z_5:
+    same_as: nodal_grad_x_5
+  node:
+    method: standardize
+    componentwise: false
+  scalar_field:
+    method: standardize
+  gradient:
+    method: std_scale
+  hessian:
+    method: std_scale
+  laplacian:
+    method: standardize

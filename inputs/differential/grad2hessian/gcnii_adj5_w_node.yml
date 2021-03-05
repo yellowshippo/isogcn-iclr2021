@@ -1,0 +1,128 @@
+data:
+  train:
+    - data/differential/preprocessed/train
+  validation:
+    - data/differential/preprocessed/validation
+  test:
+    - data/differential/preprocessed/test
+trainer:
+  inputs:
+    node:
+      - name: node
+        dim: 3
+    grad:
+      - name: gradient
+        dim: 1
+  support_input: nodal_nadj
+  outputs:
+    - name: hessian
+      dim: 3
+  prune: true
+  batch_size: 5
+  n_epoch: 1000
+  log_trigger_epoch: 1
+  stop_trigger_epoch: 10
+  seed: 0
+  lazy: true
+  num_workers: 0
+model:
+  blocks:
+    - name: IN_NODE
+      type: identity
+      is_first: true
+      input_keys:
+        - node
+      destinations:
+        - CONCATENATOR
+    - name: RESHAPE
+      type: reshape
+      is_first: true
+      input_keys:
+        - grad
+      destinations:
+        - CONCATENATOR
+      optional:
+        new_shape:
+          - -1
+          - 3
+    - name: CONCATENATOR
+      type: concatenator
+      destinations:
+        - IN_LINEAR
+    - name: IN_LINEAR
+      type: adjustable_mlp
+      bias: false
+      destinations:
+        - MUL
+        - GCNII_CONTRACTION
+      nodes:
+        - -1
+        - 64
+      activations:
+        - identity
+    - name: GCNII_CONTRACTION
+      type: gcnii
+      destinations:
+        - MLP
+      nodes:
+        - -1
+        - 64
+        - 64
+        - 64
+        - 64
+        - 64
+      activations:
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+        - identity
+      optional:
+        ah_w: true
+    - name: MLP
+      type: adjustable_mlp
+      destinations:
+        - MUL
+      nodes:
+        - -1
+        - 64
+      activations:
+        - identity
+    - name: MUL
+      type: reducer
+      destinations:
+        - GCNII
+      optional:
+        operator: mul
+    - name: GCNII
+      type: gcnii
+      bias: false
+      destinations:
+        - OUT_LINEAR
+      nodes:
+        - -1
+        - 64
+        - 64
+        - 64
+        - 64
+        - 64
+      activations:
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+        - identity
+      optional:
+        ah_w: true
+    - name: OUT_LINEAR
+      type: mlp
+      destinations:
+        - ARRAY2SYMMAT
+      bias: false
+      nodes:
+        - -1
+        - 6
+      activations:
+        - identity
+    - name: ARRAY2SYMMAT
+      type: array2symmat

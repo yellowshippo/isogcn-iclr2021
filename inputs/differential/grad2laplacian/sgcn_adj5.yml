@@ -1,0 +1,95 @@
+data:
+  train:
+    - data/differential/preprocessed/train
+  validation:
+    - data/differential/preprocessed/validation
+  test:
+    - data/differential/preprocessed/test
+trainer:
+  inputs:
+    - name: gradient
+      dim: 1
+  support_inputs:
+    - nodal_nadj_5
+  outputs:
+    - name: laplacian
+      dim: 1
+  prune: true
+  batch_size: 5
+  n_epoch: 1000
+  log_trigger_epoch: 1
+  stop_trigger_epoch: 10
+  seed: 0
+  lazy: true
+  num_workers: 0
+model:
+  blocks:
+    - name: RESHAPE
+      type: reshape
+      destinations:
+        - IN_LINEAR
+        - GCN_CONTRACTION
+      optional:
+        new_shape:
+          - -1
+          - 3
+    - name: IN_LINEAR
+      type: adjustable_mlp
+      bias: false
+      destinations:
+        - MUL
+      nodes:
+        - -1
+        - 64
+      activations:
+        - identity
+    - name: GCN_CONTRACTION
+      type: gcn
+      destinations:
+        - MLP
+      nodes:
+        - -1
+        - 64
+      activations:
+        - identity
+      optional:
+        ah_w: true
+    - name: MLP
+      type: adjustable_mlp
+      destinations:
+        - MUL
+      nodes:
+        - -1
+        - 64
+      activations:
+        - identity
+    - name: MUL
+      type: reducer
+      destinations:
+        - GCN
+      optional:
+        operator: mul
+    - name: GCN
+      type: gcn
+      bias: false
+      destinations:
+        - OUT_MLP
+      nodes:
+        - -1
+        - 64
+      activations:
+        - identity
+      optional:
+        ah_w: true
+    - name: OUT_MLP
+      type: mlp
+      bias: false
+      nodes:
+        - -1
+        - 64
+        - 8
+        - -1
+      activations:
+        - tanh
+        - tanh
+        - identity

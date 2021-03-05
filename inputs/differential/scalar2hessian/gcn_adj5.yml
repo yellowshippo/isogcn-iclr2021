@@ -1,0 +1,68 @@
+data:
+  train:
+    - data/differential/preprocessed/train
+  validation:
+    - data/differential/preprocessed/validation
+  test:
+    - data/differential/preprocessed/test
+trainer:
+  inputs:
+    - name: scalar_field
+      dim: 1
+  support_input: nodal_nadj
+  outputs:
+    - name: hessian
+  prune: true
+  batch_size: 5
+  n_epoch: 1000
+  log_trigger_epoch: 1
+  stop_trigger_epoch: 10
+  seed: 0
+  lazy: true
+  num_workers: 0
+model:
+  blocks:
+    - name: IN_MLP
+      type: adjustable_mlp
+      destinations:
+        - GCN
+      nodes:
+        - -1
+        - 8
+        - 64
+      activations:
+        - tanh
+        - tanh
+    - name: GCN
+      type: gcn
+      destinations:
+        - OUT_LINEAR
+      nodes:
+        - -1
+        - 64
+        - 64
+        - 64
+        - 64
+        - 64
+      activations:
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+        - identity
+      optional:
+        ah_w: false
+        propagations:
+          - convolution
+    - name: OUT_LINEAR
+      type: mlp
+      bias: false
+      activations:
+        - identity
+      destinations:
+        - ARRAY2SYMMAT
+      nodes:
+        - -1
+        - 6
+    - name: ARRAY2SYMMAT
+      type: array2symmat

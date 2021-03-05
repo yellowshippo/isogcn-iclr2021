@@ -1,0 +1,217 @@
+data:
+  train:
+    - data/heat_nl_tensor/preprocessed/train_50
+  validation:
+    - data/heat_nl_tensor/preprocessed/validation_16
+  test:
+    - data/heat_nl_tensor/preprocessed/test_16
+trainer:
+  inputs:
+    rank0:
+      - name: nodal_effective_volume
+        dim: 1
+      - name: nodal_mean_volume
+        dim: 1
+      - name: nodal_t_0
+        dim: 1
+    rank2:
+      - name: nodal_thermal_conductivity
+        dim: 1
+  support_inputs:
+    - nodal_adj
+  outputs:
+    - name: nodal_t_20
+      dim: 1
+    - name: nodal_t_40
+      dim: 1
+    - name: nodal_t_60
+      dim: 1
+    - name: nodal_t_80
+      dim: 1
+    - name: nodal_t_100
+      dim: 1
+  prune: true
+  batch_size: 1
+  n_epoch: 10000
+  log_trigger_epoch: 1
+  stop_trigger_epoch: 10
+  seed: 0
+  lazy: true
+  num_workers: 0
+model:
+  blocks:
+    - name: IN_RANK0
+      type: adjustable_mlp
+      is_first: true
+      input_keys:
+        - rank0
+      destinations:
+        - GCNII_RANK0_RANK1_1
+        - MATERIAL_MLP_1
+        - ADD_1
+      nodes:
+        - -1
+        - 128
+        - 512
+      activations:
+        - tanh
+        - tanh
+    - name: SYMMAT2ARRAY
+      type: symmat2array
+      is_first: true
+      input_keys:
+        - rank2
+      destinations:
+        - IN_RANK2
+    - name: IN_RANK2
+      type: adjustable_mlp
+      bias: false
+      destinations:
+        - CONTRACTION_1
+        - CONTRACTION_2
+      nodes:
+        - -1
+        - 512
+      activations:
+        - identity
+    - name: GCNII_RANK0_RANK1_1
+      type: gcnii
+      residual: false
+      destinations:
+        - MUL_1
+      nodes:
+        - -1
+        - 512
+        - 512
+        - 512
+        - 512
+        - 512
+      activations:
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+        - identity
+      optional:
+        ah_w: false
+    - name: MATERIAL_MLP_1
+      type: mlp
+      destinations:
+        - MUL_1
+      activations:
+        - tanh
+      nodes:
+        - -1
+        - 512
+    - name: MUL_1
+      type: reducer
+      destinations:
+        - CONTRACTION_1
+      optional:
+        operator: mul
+    - name: CONTRACTION_1
+      type: contraction
+      destinations: GCNII_RANK1_RANK0_1
+    - name: GCNII_RANK1_RANK0_1
+      type: gcnii
+      residual: false
+      destinations:
+        - ADD_1
+      nodes:
+        - -1
+        - 512
+        - 512
+        - 512
+        - 512
+        - 512
+      activations:
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+      optional:
+        ah_w: true
+    - name: ADD_1
+      type: reducer
+      destinations:
+        - GCNII_RANK0_RANK1_2
+        - MATERIAL_MLP_2
+        - ADD_2
+      optional:
+        operator: add
+    - name: GCNII_RANK0_RANK1_2
+      type: gcnii
+      residual: false
+      destinations:
+        - MUL_2
+      nodes:
+        - -1
+        - 512
+        - 512
+        - 512
+        - 512
+        - 512
+      activations:
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+        - identity
+      optional:
+        ah_w: false
+    - name: MATERIAL_MLP_2
+      type: mlp
+      destinations:
+        - MUL_2
+      activations:
+        - tanh
+      nodes:
+        - -1
+        - 512
+    - name: MUL_2
+      type: reducer
+      destinations:
+        - CONTRACTION_2
+      optional:
+        operator: mul
+    - name: CONTRACTION_2
+      type: contraction
+      destinations: GCNII_RANK1_RANK0_2
+    - name: GCNII_RANK1_RANK0_2
+      type: gcnii
+      residual: false
+      destinations:
+        - ADD_2
+      nodes:
+        - -1
+        - 512
+        - 512
+        - 512
+        - 512
+        - 512
+      activations:
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+        - tanh
+      optional:
+        ah_w: true
+    - name: ADD_2
+      type: reducer
+      destinations:
+        - OUT_MLP
+      optional:
+        operator: add
+    - name: OUT_MLP
+      type: mlp
+      activations:
+        - tanh
+        - tanh
+        - identity
+      nodes:
+        - 512
+        - 512
+        - 128
+        - -1

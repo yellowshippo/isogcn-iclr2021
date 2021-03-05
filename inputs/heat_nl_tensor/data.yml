@@ -1,0 +1,99 @@
+data:
+  raw: data/heat_heat_nl_tensor/raw
+  interim: data/heat_heat_nl_tensor/interim
+  preprocessed: data/heat_heat_nl_tensor/preprocessed
+  inferred: data/heat_heat_nl_tensor/inferred
+conversion:
+  required_file_names:
+    - '*.msh'
+    - '*.cnt'
+    - '*.res.0.100'
+  time_series: true
+preprocess:
+  nodal_adj: identity
+  nodal_nadj:
+    method: identity
+  nodal_nadj_2:
+    method: identity
+  nodal_nadj_4:
+    method: identity
+  nodal_nadj_5:
+    method: identity
+  nodal_nadj_10:
+    method: identity
+
+  nodal_grad_x_1:
+    method: identity
+  nodal_grad_y_1:
+    same_as: nodal_grad_x_1
+  nodal_grad_z_1:
+    same_as: nodal_grad_x_1
+  nodal_grad_x_2:
+    method: identity
+  nodal_grad_y_2:
+    same_as: nodal_grad_x_2
+  nodal_grad_z_2:
+    same_as: nodal_grad_x_2
+  nodal_grad_x_5:
+    method: identity
+  nodal_grad_y_5:
+    same_as: nodal_grad_x_5
+  nodal_grad_z_5:
+    same_as: nodal_grad_x_5
+  node:
+    method: standardize
+    componentwise: false
+  nodal_thermal_conductivity:
+    method: max_abs
+    componentwise: false
+  global_thermal_conductivity:
+    method: max_abs
+    componentwise: false
+  nodal_mean_volume:
+    method: max_abs
+  nodal_effective_volume:
+    method: max_abs
+  nodal_t_0:
+    method: identity
+  nodal_t_10:
+    same_as: nodal_t_0
+  nodal_t_20:
+    same_as: nodal_t_0
+  nodal_t_30:
+    same_as: nodal_t_0
+  nodal_t_40:
+    same_as: nodal_t_0
+  nodal_t_50:
+    same_as: nodal_t_0
+  nodal_t_60:
+    same_as: nodal_t_0
+  nodal_t_70:
+    same_as: nodal_t_0
+  nodal_t_80:
+    same_as: nodal_t_0
+  nodal_t_90:
+    same_as: nodal_t_0
+  nodal_t_100:
+    same_as: nodal_t_0
+  nodal_tv_0:
+    method: max_abs
+  nodal_tv_10:
+    same_as: nodal_tv_0
+  nodal_tv_20:
+    same_as: nodal_tv_0
+  nodal_tv_30:
+    same_as: nodal_tv_0
+  nodal_tv_40:
+    same_as: nodal_tv_0
+  nodal_tv_50:
+    same_as: nodal_tv_0
+  nodal_tv_60:
+    same_as: nodal_tv_0
+  nodal_tv_70:
+    same_as: nodal_tv_0
+  nodal_tv_80:
+    same_as: nodal_tv_0
+  nodal_tv_90:
+    same_as: nodal_tv_0
+  nodal_tv_100:
+    same_as: nodal_tv_0
