@@ -29,22 +29,22 @@ You can either locally install locally or use Docker image. However, to generate
 
 ### Local install
 
-We are using poetry, thus first install it following the instruction on https://python-poetry.org/docs/ .
+We are using poetry, thus first install it following the instruction on https://python-poetry.org/docs/ . Then, update the `Makefile` to `PYTHON ?= 'poetry run python3'` or explicitly specify the `PYTHON` environment variable on the execution of the `make` command.
 
 For GPU environment,
 
 ```
-make poetry
+PYTHON='poetry run python3' make poetry
 poetry install
-make install_pyg_gpu
+PYTHON='poetry run python3' make install_pyg_gpu
 ```
 
 For CPU environment,
 
 ```
-make poetry
+PYTHON='poetry run python3' make poetry
 poetry install
-make install_pyg_cpu
+PYTHON='poetry run python3' make install_pyg_cpu
 ```
 
 , and set `GPU_ID = -1` in the `Makefile`.
@@ -98,26 +98,50 @@ make small_heat_nl_tensor_pipeline
 
 ### Dataset download
 
-Please download the preprocessed dataset via:
+The dataset containing finite element analysis results is generated from the [ABC dataset](https://deep-geometry.github.io/abc-dataset/) using [gmsh](https://gmsh.info/) for meshing and [FrontISTR](https://github.com/FrontISTR/FrontISTR) for analysis.
 
-- Train dataset (splitted due to its large data size):
-  - https://drive.google.com/file/d/1yBKWMTYjdbOEWLf-MAvcIKeuyY9riPtB/view?usp=sharing (5.0 GB)
-  - https://drive.google.com/file/d/1p8TJkhSkGE02Yve8Ub35f8irKzB7TPrZ/view?usp=sharing (5.0 GB)
-  - https://drive.google.com/file/d/1lYt02gGAxAoclIGE_SGf6EnspOF_5-fu/view?usp=sharing (5.0 GB)
-  - https://drive.google.com/file/d/1VQaUagwpbbsY4qT_QUHM3Uv03k-GZ8lY/view?usp=sharing (5.0 GB)
-  - https://drive.google.com/file/d/1vUFGrWsu0X7R8WK3n_7btn92WJbgxoRa/view?usp=sharing (5.0 GB)
-- Validation dataset:
-  - https://drive.google.com/file/d/1yhOQ8x3O02xU18ZtS74uRIfOybjvzs0J/view?usp=sharing (6.6 GB)
-- Test dataset:
-  - https://drive.google.com/file/d/1F7kPoUqxGmlkg9ROW65AQTrTgp8vGupr/view?usp=sharing (8.4 GB)
+Please download the dataset you need. (Note: To perform only training, you need only 'preprocessed' data.) The dataset can be downloaded via:
 
-After download finished, please merge the training dataset archive with:
+* Raw data (FrontISTR analysis files)
+  * Train dataset
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/raw/train_50.tar.gz
+  * Validation dataset
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/raw/validation_16.tar.gz
+  * Test dataset
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/raw/test_16.tar.gz
+* Interim data (.npy and .npz files before standardization)
+  * Train dataset (splitted due to its large data size)
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/train_50.tar.gz.partaa
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/train_50.tar.gz.partab
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/train_50.tar.gz.partac
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/train_50.tar.gz.partad
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/train_50.tar.gz.partae
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/train_50.tar.gz.partaf
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/train_50.tar.gz.partag
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/train_50.tar.gz.partah
+  * Validation dataset
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/validation_16.tar.gz
+  * Test dataset
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/interim/test_16.tar.gz
+* Preprocessed data (.npy and .npz files after standardization)
+  * Train dataset (splitted due to its large data size)
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/preprocessed/train_50.tar.gz.partaa
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/preprocessed/train_50.tar.gz.partab
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/preprocessed/train_50.tar.gz.partac
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/preprocessed/train_50.tar.gz.partad
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/preprocessed/train_50.tar.gz.partae
+  * Validation dataset
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/preprocessed/validation_16.tar.gz
+  * Test dataset
+    * https://savanna.ritc.jp/~horiem/isogcn_iclr2021/data/heat_nl_tensor/preprocessed/test_16.tar.gz
+
+After download finished, please merge the split archives with:
 
 ```
 cat train_50.tar.gz.parta* > train.tar.gz
 ```
 
-, extract them with `tar xvf *.tar.gz`, then place them in the `data/heat_nl_tensor/preprocessed` directory.
+, extract them with `tar xvf *.tar.gz`, then place them in the corresponding `data/heat_nl_tensor/(raw|interim|preprocessed)` directory.
 
 ### Training IsoGCN
 

@@ -1,8 +1,8 @@
 data:
-  raw: data/heat_heat_nl_tensor/raw
-  interim: data/heat_heat_nl_tensor/interim
-  preprocessed: data/heat_heat_nl_tensor/preprocessed
-  inferred: data/heat_heat_nl_tensor/inferred
+  raw: data/heat_nl_tensor/raw
+  interim: data/heat_nl_tensor/interim
+  preprocessed: data/heat_nl_tensor/preprocessed
+  inferred: data/heat_nl_tensor/inferred
 conversion:
   required_file_names:
     - '*.msh'
