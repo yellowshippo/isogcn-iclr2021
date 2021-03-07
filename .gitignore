@@ -9,6 +9,7 @@ models
 inputs
 images
 deploy
+scripts
 
 
 # Makefile stuff
