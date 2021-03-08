@@ -55,7 +55,7 @@ Also, optionally, please install [FrontISTR](https://github.com/FrontISTR/FrontI
 
 ## Docker image
 
-Please download the docker image via https://drive.google.com/file/d/1WDbdGdzlgo_vuaqo6Cj4kNju38HQyWCT/view?usp=sharing , then place the image in the `images` directory. After that, plsease `make in` to login the docker befor perfroming all the following processes.
+Please download the docker image via https://savanna.ritc.jp/~horiem/isogcn_iclr2021/images/isogcn.tar, then place the image in the `images` directory. After that, plsease `make in` to login the docker befor perfroming all the following processes.
 
 
 
