@@ -2,6 +2,10 @@
 
 The official implementation of IsoGCN, presented in the ICLR2021 paper [Isometric Transformation Invariant and Equivariant Graph Convolutional Networks](https://openreview.net/forum?id=FX0vR39SJ5q) [[arXiv](https://arxiv.org/abs/2005.06316)].
 
+<img src="fig/README/isogcn.png" alt="isogcn" style="zoom:50%;" />
+
+
+
 Please cite us as:
 
 ```
