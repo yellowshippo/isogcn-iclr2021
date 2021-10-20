@@ -4,7 +4,6 @@ import pathlib
 import siml
 
 import convert_raw_data
-import infer
 
 
 def main():
@@ -61,8 +60,6 @@ def main():
         convert_to_order1=True,
         read_simulation_type='fistr',
         conversion_function=convert_raw_data.ConversionFuncionCreator(),
-        data_addition_function=infer.DataAddtionFunctionCreator(
-            variable_name=args.variable_name),
         write_yaml=True)
 
 
