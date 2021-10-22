@@ -59,7 +59,7 @@ def main():
         converter_parameters_pkl=args.preprocessors_pkl,
         convert_to_order1=True,
         read_simulation_type='fistr',
-        conversion_function=convert_raw_data.ConversionFuncionCreator(),
+        conversion_function=convert_raw_data.HeatConversionFuncionCreator(),
         write_yaml=True)
 
 
