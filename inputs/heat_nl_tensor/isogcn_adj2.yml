@@ -5,6 +5,12 @@ data:
     - data/heat_nl_tensor/preprocessed/validation_16
   test:
     - data/heat_nl_tensor/preprocessed/test_16
+conversion:
+  required_file_names:
+    - '*.msh'
+    - '*.cnt'
+    - '*.res.0.100'
+  time_series: true
 trainer:
   inputs:
     rank0:

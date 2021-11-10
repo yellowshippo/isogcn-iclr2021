@@ -49,6 +49,7 @@ def main():
     #     write_simulation = False
 
     inferer = siml.inferer.Inferer.read_settings(yaml_file)
+    inferer.setting.conversion.time_series = True
     inferer.infer(
         model=args.model_path, save=True,
         output_directory=args.out_dir,
@@ -59,7 +60,8 @@ def main():
         converter_parameters_pkl=args.preprocessors_pkl,
         convert_to_order1=True,
         read_simulation_type='fistr',
-        conversion_function=convert_raw_data.HeatConversionFuncionCreator(),
+        conversion_function=convert_raw_data.HeatConversionFuncionCreator(
+            convert_answer=False, light=True, create_elemental=False),
         write_yaml=True)
 
 

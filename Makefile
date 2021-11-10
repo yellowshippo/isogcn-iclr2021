@@ -181,7 +181,7 @@ small_heat_nl_tensor_pipeline: requirements
 	$(PYTHON) src/infer.py \
 		tests/data/simple/nl_tensor/iso_gcn.scaled \
 		tests/data/simple/nl_tensor/preprocessed \
-		-p tests/data/simple/nl_tensor/preprocessed/preprocessors.pkl \
+		-p tests/data/simple/nl_tensor/preprocessed/preprocessors.pkl
 
 
 

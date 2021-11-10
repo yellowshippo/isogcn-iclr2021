@@ -235,11 +235,6 @@ class HeatConversionFuncionCreator(ConversionFuncionCreator):
         if self.convert_answer:
             temperatures = fem_data.nodal_data.get_attribute_data(
                 'TEMPERATURE')
-            if len(temperatures.shape) != 3:
-                raise ValueError(
-                    'Temperature is not time series '
-                    f"(shape: {temperatures.shape}).\n"
-                    'Set conversion.time_series = true in the YAML file.')
             dict_t_data = {
                 f"nodal_t_{step}": t[filter_] for step, t in zip(
                     fem_data.settings['time_steps'], temperatures)}
