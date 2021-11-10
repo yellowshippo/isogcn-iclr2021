@@ -35,16 +35,16 @@ def main():
     mse, std_error = infer.calculate_loss_stats(
         temperature, ref_temperature)
 
-    nodal_effective_volume = fem_data.convert_elemental2nodal(
-        fem_data.calculate_element_volumes(), mode='effective')
-    l2_error, l2_std_error = infer.calculate_l2_stats(
-        temperature, ref_temperature, nodal_effective_volume)
+    # nodal_effective_volume = fem_data.convert_elemental2nodal(
+    #     fem_data.calculate_element_volumes(), mode='effective')
+    # l2_error, l2_std_error = infer.calculate_l2_stats(
+    #     temperature, ref_temperature, nodal_effective_volume)
     print(
         f"MSE: {mse:.5e} "
         f"+/- {std_error:.5e}")
-    print(
-        f"Squared L2 error: {l2_error:.5e} "
-        f"+/- {l2_std_error:.5e}")
+    # print(
+    #     f"Squared L2 error: {l2_error:.5e} "
+    #     f"+/- {l2_std_error:.5e}")
 
     return
 
