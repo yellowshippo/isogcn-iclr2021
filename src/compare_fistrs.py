@@ -26,7 +26,7 @@ def main():
     fem_data = femio.FEMData.read_directory(
         'fistr', args.fistr_directory, read_npy=False)
     ref_fem_data = femio.FEMData.read_directory(
-        'fistr', args.ref_fistr_directory)
+        'fistr', args.ref_fistr_directory, read_npy=False)
 
     # Extract the latest temperature
     temperature = fem_data.nodal_data.get_attribute_data('TEMPERATURE')
