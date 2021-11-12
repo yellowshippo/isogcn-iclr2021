@@ -143,28 +143,28 @@ differential_data: requirements
 
 
 # Anisotropic nonlinear heat equation dataset operator dataset
-heat_nl_tensor: requirements
+heat_nl_tensor:
 	$(PYTHON) src/train.py inputs/heat_nl_tensor/isogcn_adj$(ADJ).yml -g $(GPU_ID) -n $(N_EPOCH)
 	$(PYTHON) src/infer.py \
 		models/heat_nl_tensor/isogcn_adj$(ADJ) \
 		data/heat_nl_tensor/preprocessed/test_16 \
 		-p data/heat_nl_tensor/preprocessed/preprocessors.pkl
 
-heat_nl_tensor_baseline: requirements
+heat_nl_tensor_baseline:
 	$(PYTHON) src/train.py inputs/heat_nl_tensor/$(BASELINE_NAME)_adj$(ADJ)$(INPUT).yml -g $(GPU_ID) -n $(N_EPOCH)
 	$(PYTHON) src/infer.py \
 		models/heat_nl_tensor/$(BASELINE_NAME)_adj$(ADJ)$(INPUT) \
 		data/heat_nl_tensor/preprocessed/test_16 \
 		-p data/heat_nl_tensor/preprocessed/preprocessors.pkl
 
-heat_nl_tensor_data: requirements
+heat_nl_tensor_data:
 	$(PYTHON) src/convert_raw_data.py inputs/heat_nl_tensor/data.yml -w true
 	$(PYTHON) src/preprocess_interim_data.py inputs/heat_nl_tensor/data.yml
 	$(PYTHON) src/calculate_scale_genam.py data/heat_nl_tensor/preprocessed
 
 
 ## Sample process for the anisotropic nonlinear heat dataset
-small_heat_nl_tensor_pipeline: requirements
+small_heat_nl_tensor_pipeline:
 	$(RM) tests/data/simple/nl_tensor/raw tests/data/simple/nl_tensor/interim tests/data/simple/nl_tensor/preprocessed
 	$(RM) tests/data/models/nl_tensor/ci_train_iso_gcn_simple
 	$(RM) tests/data/simple/nl_tensor/iso_gcn.yml.scaled.yml
